@@ -1,1 +1,25 @@
+pip install flask-jwt-extended
 
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+
+# Configure JWT
+app.config['JWT_SECRET_KEY'] = 'your_jwt_secret_key'  # Change to a strong key
+jwt = JWTManager(app)
+
+# JWT Login Route (Returns Token)
+@app.route('/api/login', methods=['POST'])
+def api_login():
+    data = request.get_json()
+    user = User.query.filter_by(email=data['email']).first()
+    
+    if user and bcrypt.check_password_hash(user.password, data['password']):
+        access_token = create_access_token(identity={'id': user.id, 'name': user.name})
+        return {'access_token': access_token}, 200
+    return {'message': 'Invalid credentials'}, 401
+
+# JWT Protected Route
+@app.route('/api/dashboard', methods=['GET'])
+@jwt_required()
+def api_dashboard():
+    current_user = get_jwt_identity()
+    return {'message': f"Welcome, {current_user['name']}!"}, 200
