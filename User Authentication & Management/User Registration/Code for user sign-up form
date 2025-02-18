@@ -1,1 +1,111 @@
+1️⃣ Install Required Packages
+pip install flask flask-wtf flask-sqlalchemy flask-bcrypt flask-login
+
+2️⃣ Backend: Flask Server (app.py)
+from flask import Flask, render_template, request, redirect, url_for, flash
+from flask_sqlalchemy import SQLAlchemy
+from flask_bcrypt import Bcrypt
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField
+from wtforms.validators import InputRequired, Email, Length, EqualTo
+
+# Initialize Flask App
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'your_secret_key'  # Change this to a strong secret key
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'  # SQLite database
+db = SQLAlchemy(app)
+bcrypt = Bcrypt(app)
+
+# User Database Model
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(150), nullable=False)
+    email = db.Column(db.String(150), unique=True, nullable=False)
+    password = db.Column(db.String(256), nullable=False)
+
+# Sign-Up Form using Flask-WTF
+class SignupForm(FlaskForm):
+    name = StringField('Full Name', validators=[InputRequired(), Length(min=3, max=150)])
+    email = StringField('Email', validators=[InputRequired(), Email()])
+    password = PasswordField('Password', validators=[
+        InputRequired(), Length(min=6),
+        EqualTo('confirm_password', message='Passwords must match')
+    ])
+    confirm_password = PasswordField('Confirm Password', validators=[InputRequired()])
+    submit = SubmitField('Sign Up')
+
+# Route for Sign-Up Page
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    form = SignupForm()
+    if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        new_user = User(name=form.name.data, email=form.email.data, password=hashed_password)
+
+        try:
+            db.session.add(new_user)
+            db.session.commit()
+            flash('Account created successfully! Please log in.', 'success')
+            return redirect(url_for('signup'))  # Redirect to login page later
+        except:
+            flash('Email already exists. Try another.', 'danger')
+
+    return render_template('signup.html', form=form)
+
+# Create Database Before First Run
+with app.app_context():
+    db.create_all()
+
+# Run the Flask App
+if __name__ == '__main__':
+    app.run(debug=True)
+
+3️⃣ Frontend: Sign-Up Form (templates/signup.html)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Manila Street Food Finder</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center">Sign Up</h2>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            <div class="mb-3">
+                {{ form.name.label(class="form-label") }}
+                {{ form.name(class="form-control") }}
+            </div>
+            <div class="mb-3">
+                {{ form.email.label(class="form-label") }}
+                {{ form.email(class="form-control") }}
+            </div>
+            <div class="mb-3">
+                {{ form.password.label(class="form-label") }}
+                {{ form.password(class="form-control") }}
+            </div>
+            <div class="mb-3">
+                {{ form.confirm_password.label(class="form-label") }}
+                {{ form.confirm_password(class="form-control") }}
+            </div>
+            <button type="submit" class="btn btn-primary">{{ form.submit.label }}</button>
+        </form>
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                <div class="mt-3">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+    </div>
+</body>
+</html>
+
+
+4️⃣ Run the Application
+python app.py
 
