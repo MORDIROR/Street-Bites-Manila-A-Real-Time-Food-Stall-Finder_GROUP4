@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head></head>
+  <body></body>
+</html>
+
+<style>
+  .brand-name {
+    font-family: Arial;
+    font-size: 30px;
+    font-weight: bold;
+    color: rgb(0, 0, 0);
+    margin-top: 35px;
+    margin-left: 50px;
+  }
+
+  .description {
+    font-family: Arial;
+    font-size: 18px;
+    font-style: italic;
+    color: rgb(0, 0, 0);
+    margin-top: 10px;
+    margin-left: 50px;
+    width: 400px;
+  }
+</style>
+
+<p class="brand-name">
+  Street Bites Manila
+</p>
+
+<p class="description">
+  Street Bites Manila is a website that helps you find the best street food in Manila.
+</p>
+
+<button>
+  Find Street Food
+</button>
+
+<button>
+  Add a Street Food Spot
+</button>
