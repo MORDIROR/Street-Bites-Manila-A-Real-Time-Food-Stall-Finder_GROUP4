@@ -1,7 +1,10 @@
-_________________________________________________________________________________________
 **Project Description**
 
 Street Bites Manila is a web-based platform that helps users discover and navigate Manila’s vibrant street food scene. The platform allows users to locate food stalls, read reviews, and connect with vendors in real-time.
+
+________________________________________________________________________________________
+**Project Unit Testing**
+- Still a working progress.
 
 ________________________________________________________________________________________
 **Project Features**
