@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Street Bites Manila</title>
+    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <button onclick="toggleSidebar()">☰</button>
+        <ul>
+            <li>Adidas (Chicken Feet)</li>
+            <li>Atay</li>
+            <li>Balut</li>
+            <li>Banana cue</li>
+            <li>BBQ</li>
+            <li>Betamax</li>
+            <li>Fishball</li>
+            <li>Fresh lumpia</li>
+            <li>Halo-halo</li>
+            <li>Helmet (Chicken Head)</li>
+            <li>Isaw</li>
+            <li>Kikiam</li>
+            <li>Kwek-kwek</li>
+            <li>Lomi</li>
+            <li>Lugaw</li>
+            <li>Mangga w/ Bagoong</li>
+            <li>Okoy</li>
+            <li>Pares</li>
+            <li>Proben</li>
+            <li>Siomai</li>
+            <li>Squidball</li>
+            <li>Taho</li>
+            <li>Turon</li>
+            <li>Veggy balls</li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <header>
+            <h1>Street Bites Manila</h1>
+            <div class="search-bar">
+                <input type="text" placeholder="Search for food stalls...">
+                <button>Search</button>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#find-stalls">Find Stalls</a></li>
+                    <li><a href="#reviews">Reviews</a></li>
+                    <li><a href="#signup">Vendor Sign-Up</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <section id="home">
+                <h2>Find the Best Street Food in Manila!</h2>
+            
+                <div id="streetfood-icons">
+                    <div class="food-item" onclick="filterVendorsByFood('Isaw')">
+                        <img src="streetfood-icons/isaw.png" alt="Isaw">
+                        <p>Isaw</p>
+                    </div>
+                    <div class="food-item" onclick="filterVendorsByFood('Fishball')">
+                        <img src="streetfood-icons/fishball.png" alt="Fishball">
+                        <p>Fishball</p>
+                    </div>
+                    <div class="food-item" onclick="filterVendorsByFood('Kwek-Kwek')">
+                        <img src="streetfood-icons/kwek-kwek.png" alt="Kwek-kwek">
+                        <p>Kwek-Kwek</p>
+                    </div>
+                    <div class="food-item" onclick="filterVendorsByFood('Kikiam')">
+                        <img src="streetfood-icons/kikiam.png" alt="Kikiam">
+                        <p>Kikiam</p>
+                    </div>
+                    <div class="food-item" onclick="filterVendorsByFood('Pork BBQ')">
+                        <img src="streetfood-icons/pork-bbq.png" alt="Pork BBQ">
+                        <p>Pork Barbeque</p>
+                    </div>
+                    <div class="food-item" onclick="filterVendorsByFood('Calamares')">
+                        <img src="" alt="Calamares">
+                        <p>Pork Barbeque</p>
+                    </div>
+                    <div class="food-item" onclick="filterVendorsByFood('Bananaque')">
+                        <img src="streetfood-icons/bananaque.png" alt="Bananaque">
+                        <p>Bananaque</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="find-stalls">
+                <h2>Food Stall Finder</h2>
+                <p>Browse stalls on our interactive map.</p>
+                <div id="map"></div>
+            </section>
+
+            <section id="reviews">
+                <h2>Customer Reviews</h2>
+                <p>See what others are saying about their favorite street food spots.</p>
+            </section>
+
+            <section id="signup">
+                <h2>Vendor Sign-Up</h2>
+                <p>Register your food stall to reach more customers!</p>
+                <button class="vendor-signup" onclick="location.href='vendor-signup.html'">Sign Up</button>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 Street Bites Manila | All Rights Reserved</p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+        var sidebar = document.getElementById("sidebar");
+        sidebar.classList.toggle("expanded");
+        }
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWwZaheI8E8zXhuQFIkdcHDkq_x265FuU&callback=initMap" async defer></script>
+
+    <script>
+        let map;
+
+        function initMap() {
+        var manila = { lat: 14.5995, lng: 120.9842 }; // Coordinates for Manila
+        var map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 12, // Adjust zoom level
+        center: manila,
+        });
+
+        // Add a marker (optional)
+        var marker = new google.maps.Marker({
+        position: manila,
+        map: map,
+        title: "Manila",
+        });
+        }
+    </script>
+    <script type="module">
+        import { db } from "./firebase-config.js";
+        import { collection, getDocs } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+    
+        let vendorMarkers = []; // Store vendor markers
+    
+        function initMap() {
+            window.map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 14.5995, lng: 120.9842 }, // Default Manila
+                zoom: 12
+            });
+        }
+    
+        async function filterVendorsByFood(foodType) {
+            // Clear existing markers
+            vendorMarkers.forEach(marker => marker.setMap(null));
+            vendorMarkers = [];
+    
+            const querySnapshot = await getDocs(collection(db, "vendors"));
+            let foundVendors = 0;
+    
+            querySnapshot.forEach(doc => {
+                let data = doc.data();
+                if (data.specialty.toLowerCase() === foodType.toLowerCase()) {
+                    foundVendors++;
+    
+                    // Create a marker for each matching vendor
+                    let marker = new google.maps.Marker({
+                        position: { lat: parseFloat(data.latitude), lng: parseFloat(data.longitude) },
+                        map: window.map,
+                        title: data.name
+                    });
+    
+                    vendorMarkers.push(marker);
+    
+                    let infoWindow = new google.maps.InfoWindow({
+                        content: `<h3>${data.name}</h3><p>${data.location}</p>`
+                    });
+    
+                    marker.addListener("click", () => infoWindow.open(window.map, marker));
+                }
+            });
+    
+            if (foundVendors > 0) {
+                window.map.setZoom(14);
+            } else {
+                alert(`No vendors found for ${foodType}.`);
+            }
+        }
+    
+        window.initMap = initMap;
+        window.filterVendorsByFood = filterVendorsByFood;
+    </script>
+    
+</body>
+</html>
+
