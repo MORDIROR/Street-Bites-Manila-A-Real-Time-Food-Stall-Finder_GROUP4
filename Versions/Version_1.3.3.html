@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Street Bites Manila</title>
+    <script src="script.js" defer></script>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          background-color: #fff3e0;
+          display: flex;
+          flex-direction: column;
+          min-height: 100vh;
+        }
+        header {
+          background-color: #fab12f;
+          color: white;
+          padding: 20px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          position: relative;
+        }
+        header h1 {
+          margin: 0;
+          font-size: 30px;
+        }
+        .search-bar {
+          position: absolute;
+          left: 40%;
+          transform: translateX(-50%);
+        }
+        nav ul {
+          list-style-type: none;
+          padding: 0;
+          margin: 0;
+          display: flex;
+        }
+        nav ul li {
+          margin: 0 15px;
+        }
+        nav ul li a {
+          color: white;
+          text-decoration: none;
+          font-size: 18px;
+        }
+        .sidebar {
+          width: 60px;
+          height: 100vh;
+          background-color: #ff9800;
+          position: fixed;
+          top: 0;
+          left: 0;
+          overflow-x: hidden;
+          transition: width 0.3s;
+          
+          
+        }
+        .sidebar.expanded {
+          width: 250px;
+        }
+        .sidebar.color{
+          background-color: #db8b13;
+        }
+        .sidebar button {
+          background: none;
+          border: none;
+          color: white;
+          font-size: 24px;
+          cursor: pointer;
+          padding: 10px;
+          width: 100%;
+          text-align: left;
+        }
+        .sidebar ul {
+          list-style: none;
+          padding: 10px;
+          display: none;
+        }
+        .sidebar.expanded ul {
+          display: block;
+        }
+        .sidebar ul li {
+          padding: 10px;
+          color: white;
+          cursor: pointer;
+        }
+        .main-content {
+          margin-left: 60px;
+          transition: margin-left 0.3s;
+        }
+        .expanded + .main-content {
+          margin-left: 250px;
+        }
+        main {
+          flex: 1;
+        }
+        #home {
+          text-align: center;
+          padding: 20px;
+        }
+        #home h2 {
+          color: #ff9800;
+        }
+        input[type="text"], button {
+          padding: 10px;
+          margin: 10px;
+          border: 1px solid #ff9800;
+          border-radius: 5px;
+        }
+        button {
+          background-color: #ff9800;
+          color: white;
+          cursor: pointer;
+        }
+        #map {
+          height: 400px;
+          width: 100%;
+          border-radius: 10px;
+        }
+        footer {
+          background-color: #fab12f;
+          color: white;
+          text-align: center;
+          padding: 15px;
+          margin-top: auto;
+        }
+        section {
+          margin: 0 auto;
+          max-width: 800px;
+          padding: 20px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            text-align: center;
+        }
+
+        .close {
+            float: right;
+            font-size: 24px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <button onclick="toggleSidebar()">☰</button>
+        <ul>
+          <li>Adidas (Chicken Feet)</li>
+          <li>Atay</li>
+          <li>Balut</li>
+          <li>Banana cue</li>
+          <li>BBQ</li>
+          <li>Betamax</li>
+          <li>Fishball</li>
+          <li>Fresh lumpia</li>
+          <li>Halo-halo</li>
+          <li>Helmet (Chicken Head)</li>
+          <li>Isaw</li>
+          <li>Kikiam</li>
+          <li>Kwek-kwek</li>
+          <li>Lomi</li>
+          <li>Lugaw</li>
+          <li>Mangga w/ Bagoong</li>
+          <li>Okoy</li>
+          <li>Pares</li>
+          <li>Proben</li>
+          <li>Siomai</li>
+          <li>Squidball</li>
+          <li>Taho</li>
+          <li>Turon</li>
+          <li>Veggy balls</li>          
+        </ul>
+    </div>
+    
+    <div class="main-content">
+        <header>
+            <h1>Street Bites Manila</h1>
+            <div class="search-bar">
+                <input type="text" placeholder="Search for food stalls...">
+                <button>Search</button>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#find-stalls">Find Stalls</a></li>
+                    <li><a href="#reviews">Reviews</a></li>
+                    <li><a href="#vendor-signup">Vendor Sign-Up</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </header>
+    
+        <main>
+            <section id="home">
+                <h2>Find the Best Street Food in Manila!</h2>
+            </section>
+            
+            <section id="find-stalls">
+                <h2>Food Stall Finder</h2>
+                <p>Browse stalls on our interactive map.</p>
+                <div id="map"></div>
+            </section>
+            
+            <section id="reviews">
+                <h2>Customer Reviews</h2>
+                <p>See what others are saying about their favorite street food spots.</p>
+            </section>
+            
+            <section id="vendor-signup">
+                <h2>Vendor Sign-Up</h2>
+                <p>Register your food stall to reach more customers!</p>
+                <button>Sign Up</button>
+            </section>
+        </main>
+    
+        <footer>
+            <p>&copy; 2025 Street Bites Manila | All Rights Reserved</p>
+        </footer>
+    </div>
+
+    <div id="signup-modal" class="modal">
+      <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2>Vendor Sign-Up</h2>
+          <form id="vendorForm">
+              <label for="vendorName">Vendor Name:</label>
+              <input type="text" id="vendorName" required>
+
+              <label for="contact">Contact Number:</label>
+              <input type="text" id="contact" required>
+
+              <label for="stallLocation">Stall Location:</label>
+              <input type="text" id="stallLocation" required>
+
+              <label for="foodItems">Food Items Sold:</label>
+              <input type="text" id="foodItems" required>
+
+              <button type="submit">Submit</button>
+          </form>
+      </div>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("expanded");
+        }
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWwZaheI8E8zXhuQFIkdcHDkq_x265FuU&callback=initMap" async defer></script>
+
+    <script>
+        let map;
+
+    function initMap() {
+        var manila = { lat: 14.5995, lng: 120.9842 }; // Coordinates for Manila
+        var map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 12, // Adjust zoom level
+            center: manila,
+        });
+
+        // Add a marker (optional)
+        var marker = new google.maps.Marker({
+            position: manila,
+            map: map,
+            title: "Manila",
+        });
+    }
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+          var modal = document.getElementById("signup-modal");
+          var btn = document.querySelector("#signup button");
+          var close = document.querySelector(".close");
+
+          btn.addEventListener("click", function() {
+              modal.style.display = "block";
+          });
+
+          close.addEventListener("click", function() {
+              modal.style.display = "none";
+          });
+
+          window.addEventListener("click", function(event) {
+              if (event.target === modal) {
+                  modal.style.display = "none";
+              }
+          });
+
+          // Handle Form Submission
+          document.getElementById("vendorForm").addEventListener("submit", function(event) {
+              event.preventDefault();
+              alert("Sign-Up Successful! We'll review your application.");
+              modal.style.display = "none";
+          });
+        });
+    </script>
+</body>
+</html>
+

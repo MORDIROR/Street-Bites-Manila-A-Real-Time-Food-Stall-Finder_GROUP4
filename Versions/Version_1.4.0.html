@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Street Bites Manila</title>
+    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <button onclick="toggleSidebar()">☰</button>
+        <ul>
+          <li>Adidas (Chicken Feet)</li>
+          <li>Atay</li>
+          <li>Balut</li>
+          <li>Banana cue</li>
+          <li>BBQ</li>
+          <li>Betamax</li>
+          <li>Fishball</li>
+          <li>Fresh lumpia</li>
+          <li>Halo-halo</li>
+          <li>Helmet (Chicken Head)</li>
+          <li>Isaw</li>
+          <li>Kikiam</li>
+          <li>Kwek-kwek</li>
+          <li>Lomi</li>
+          <li>Lugaw</li>
+          <li>Mangga w/ Bagoong</li>
+          <li>Okoy</li>
+          <li>Pares</li>
+          <li>Proben</li>
+          <li>Siomai</li>
+          <li>Squidball</li>
+          <li>Taho</li>
+          <li>Turon</li>
+          <li>Veggy balls</li>          
+        </ul>
+    </div>
+    
+    <div class="main-content">
+        <header>
+            <h1>Street Bites Manila</h1>
+            <div class="search-bar">
+                <input type="text" placeholder="Search for food stalls...">
+                <button>Search</button>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#find-stalls">Find Stalls</a></li>
+                    <li><a href="#reviews">Reviews</a></li>
+                    <li><a href="#signup">Vendor Sign-Up</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </header>
+    
+        <main>
+            <section id="home">
+                <h2>Find the Best Street Food in Manila!</h2>
+            </section>
+            
+            <section id="find-stalls">
+                <h2>Food Stall Finder</h2>
+                <p>Browse stalls on our interactive map.</p>
+                <div id="map"></div>
+            </section>
+            
+            <section id="reviews">
+                <h2>Customer Reviews</h2>
+                <p>See what others are saying about their favorite street food spots.</p>
+            </section>
+            
+            <section id="signup">
+                <h2>Vendor Sign-Up</h2>
+                <p>Register your food stall to reach more customers!</p>
+                <button>Sign Up</button>
+            </section>
+        </main>
+    
+        <footer>
+            <p>&copy; 2025 Street Bites Manila | All Rights Reserved</p>
+        </footer>
+    </div>
+    
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("expanded");
+        }
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWwZaheI8E8zXhuQFIkdcHDkq_x265FuU&callback=initMap" async defer></script>
+
+    <script>
+        let map;
+
+    function initMap() {
+        var manila = { lat: 14.5995, lng: 120.9842 }; // Coordinates for Manila
+        var map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 12, // Adjust zoom level
+            center: manila,
+        });
+
+        // Add a marker (optional)
+        var marker = new google.maps.Marker({
+            position: manila,
+            map: map,
+            title: "Manila",
+        });
+    }
+    </script>
+</body>
+</html>
+
