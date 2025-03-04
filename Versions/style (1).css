@@ -1,0 +1,155 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #fff3e0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+header {
+  background-color: #fab12f;
+  color: white;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+header h1 {
+  margin: 0;
+  font-size: 30px;
+}
+.search-bar {
+  position: absolute;
+  left: 40%;
+  transform: translateX(-50%);
+}
+nav ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+}
+nav ul li {
+  margin: 0 15px;
+}
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+}
+.sidebar {
+  width: 60px;
+  height: 100vh;
+  background-color: #ff9800;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  transition: width 0.3s;
+}
+.sidebar.expanded {
+  width: 250px;
+}
+.sidebar.color{
+  background-color: #db8b13;
+}
+.sidebar button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 10px;
+  width: 100%;
+  text-align: left;
+}
+.sidebar ul {
+  list-style: none;
+  padding: 10px;
+  display: none;
+}
+.sidebar.expanded ul {
+  display: block;
+}
+.sidebar ul li {
+  padding: 10px;
+  color: white;
+  cursor: pointer;
+}
+.main-content {
+  margin-left: 60px;
+  transition: margin-left 0.3s;
+}
+.expanded + .main-content {
+  margin-left: 250px;
+}
+#home {
+  text-align: center;
+  padding: 20px;
+}
+#home h2 {
+  color: #ff9800;
+}
+#vendor-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+input[type="text"], button {
+  padding: 10px;
+  margin: 10px;
+  border: 1px solid #ff9800;
+  border-radius: 5px;
+}
+input[type="tel"], button {
+  padding: 10px;
+  margin: 10px;
+  border: 1px solid #ff9800;
+  border-radius: 5px;
+}
+input[type="email"], button {
+  padding: 10px;
+  margin: 10px;
+  border: 1px solid #ff9800;
+  border-radius: 5px;
+}
+button {
+  background-color: #ff9800;
+  color: white;
+  cursor: pointer;
+}
+#map {
+  height: 500px;
+  width: 100%;
+  border-radius: 10px;
+}
+footer {
+  background-color: #fab12f;
+  color: white;
+  text-align: center;
+  padding: 15px;
+  margin-top: auto;
+}
+section {
+  margin: auto;
+  max-width: 1200px;
+  padding: 20px;
+}
+#streetfood-icons {
+  display: inline-block;
+  margin-right: 20px;
+}
+#streetfood-icons img{
+  display: inline-block;
+  width: 300px;
+  height: auto;
+  border-radius: 5px;
+  
+}
+#streetfood-icons img:hover{
+  transform: scale(1.1);
+}
+
+
