@@ -28,7 +28,7 @@ CPE106L-4 | Software Design Laboratort | Software Project
 ________________________________________________________________________________________
 **Project Team:**
 
-Derrick Amarillo  |  Jasmine Buena  |  Kian Andrei Maglipac  |  John David Villota
+Derrick Amarillo  |  Jasmine Gabrielle Buena  |  Kian Andrei Maglipac  |  John David Villota
 
 ________________________________________________________________________________________
 **Faculty Mentor:**
