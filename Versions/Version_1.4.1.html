@@ -42,9 +42,10 @@
         <header>
             <h1>Street Bites Manila</h1>
             <div class="search-bar">
-                <input type="text" placeholder="Search for food stalls...">
-                <button>Search</button>
+                <input type="text" id="search-input" placeholder="Enter Business Name...">
+                <button id="search-button">Search</button>
             </div>
+            
             <nav>
                 <ul>
                     <li><a href="#home">Home</a></li>
@@ -82,12 +83,16 @@
                         <p>Pork Barbeque</p>
                     </div>
                     <div class="food-item" onclick="filterVendorsByFood('Calamares')">
-                        <img src="" alt="Calamares">
-                        <p>Pork Barbeque</p>
+                        <img src="streetfood-icons/calamares.png" alt="Calamares">
+                        <p>Calamares</p>
                     </div>
                     <div class="food-item" onclick="filterVendorsByFood('Bananaque')">
                         <img src="streetfood-icons/bananaque.png" alt="Bananaque">
                         <p>Bananaque</p>
+                    </div>
+                    <div class="food-item" onclick="filterVendorsByFood('Squidball')">
+                        <img src="streetfood-icons/squidball.png" alt="Squidball">
+                        <p>Squidball</p>
                     </div>
                 </div>
             </section>
@@ -128,19 +133,17 @@
         let map;
 
         function initMap() {
-        var manila = { lat: 14.5995, lng: 120.9842 }; // Coordinates for Manila
-        var map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 12, // Adjust zoom level
-        center: manila,
-        });
+    console.log("🌍 Initializing Google Map...");
+    
+    // Ensure map is globally accessible
+    window.map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 12,
+        center: { lat: 14.5995, lng: 120.9842 } // Default Manila
+    });
 
-        // Add a marker (optional)
-        var marker = new google.maps.Marker({
-        position: manila,
-        map: map,
-        title: "Manila",
-        });
-        }
+    console.log("✅ Google Map initialized:", window.map);
+}
+
     </script>
     <script type="module">
         import { db } from "./firebase-config.js";
@@ -156,41 +159,200 @@
         }
     
         async function filterVendorsByFood(foodType) {
-            // Clear existing markers
-            vendorMarkers.forEach(marker => marker.setMap(null));
-            vendorMarkers = [];
-    
-            const querySnapshot = await getDocs(collection(db, "vendors"));
-            let foundVendors = 0;
-    
-            querySnapshot.forEach(doc => {
-                let data = doc.data();
-                if (data.specialty.toLowerCase() === foodType.toLowerCase()) {
-                    foundVendors++;
-    
-                    // Create a marker for each matching vendor
-                    let marker = new google.maps.Marker({
-                        position: { lat: parseFloat(data.latitude), lng: parseFloat(data.longitude) },
-                        map: window.map,
-                        title: data.name
-                    });
-    
-                    vendorMarkers.push(marker);
-    
-                    let infoWindow = new google.maps.InfoWindow({
-                        content: `<h3>${data.name}</h3><p>${data.location}</p>`
-                    });
-    
-                    marker.addListener("click", () => infoWindow.open(window.map, marker));
-                }
-            });
-    
-            if (foundVendors > 0) {
-                window.map.setZoom(14);
-            } else {
-                alert(`No vendors found for ${foodType}.`);
-            }
+    let searchFood = foodType.trim(); // Ensure exact match
+    console.log(`🔍 Searching for vendors selling: "${searchFood}"`);
+
+    // Ensure the map is initialized
+    if (!window.map) {
+        console.error("❌ Google Map is not initialized.");
+        alert("Map is not loaded yet. Please try again.");
+        return;
+    }
+
+    // Clear existing markers
+    vendorMarkers.forEach(marker => marker.setMap(null));
+    vendorMarkers = [];
+
+    const querySnapshot = await getDocs(collection(db, "vendors"));
+    let foundVendors = 0;
+    let bounds = new google.maps.LatLngBounds();
+
+    querySnapshot.forEach(doc => {
+        let data = doc.data();
+        console.log("📌 Fetched vendor data:", data);
+
+        let vendorFood = data.specialty.trim(); // Ensure exact match
+
+        // Convert latitude and longitude from string to number
+        let lat = parseFloat(data.latitude);
+        let lng = parseFloat(data.longitude);
+
+        // Validate lat/lng before creating a marker
+        if (isNaN(lat) || isNaN(lng)) {
+            console.error(`❌ Invalid lat/lng values for ${data.name}:`, data.latitude, data.longitude);
+            return;
         }
+
+        if (vendorFood === searchFood) {
+            foundVendors++;
+
+            if (!window.map) {
+    console.error("❌ Google Map is not initialized!");
+    alert("Map is not loaded yet. Please refresh and try again.");
+    return;
+}
+
+async function searchVendorByName() {
+    let searchName = document.getElementById("search-input").value.trim().toLowerCase();
+
+    if (searchName === "") {
+        alert("Please enter a business name to search.");
+        return;
+    }
+
+    console.log(`🔍 Searching for vendor: "${searchName}"`);
+
+    // Clear existing markers
+    vendorMarkers.forEach(marker => marker.setMap(null));
+    vendorMarkers = [];
+
+    const querySnapshot = await getDocs(collection(db, "vendors"));
+    let vendorFound = false;
+
+    querySnapshot.forEach(doc => {
+        let data = doc.data();
+        async function searchVendorByName() {
+    let searchName = document.getElementById("search-input").value.trim().toLowerCase().replace(/\s+/g, "");
+    
+    if (searchName === "") {
+        alert("Please enter a business name to search.");
+        return;
+    }
+
+    console.log(`🔍 Searching for vendor: "${searchName}"`);
+
+    // Clear existing markers
+    vendorMarkers.forEach(marker => marker.setMap(null));
+    vendorMarkers = [];
+
+    const querySnapshot = await getDocs(collection(db, "vendors"));
+    let vendorFound = false;
+
+    querySnapshot.forEach(doc => {
+        let data = doc.data();
+        let vendorName = data.name.trim().toLowerCase().replace(/\s+/g, ""); // Remove spaces for better matching
+        let lat = parseFloat(data.latitude);
+        let lng = parseFloat(data.longitude);
+
+        if (vendorName === searchName) {
+            vendorFound = true;
+
+            let marker = new google.maps.Marker({
+                position: { lat, lng },
+                map: window.map,
+                title: data.name
+            });
+
+            vendorMarkers.push(marker);
+
+            let infoWindow = new google.maps.InfoWindow({
+                content: `<h3>${data.name}</h3>
+                          <p>Location: ${data.location}</p>
+                          <p>Specialty: ${data.specialty}</p>`
+            });
+
+            marker.addListener("click", () => infoWindow.open(window.map, marker));
+
+            window.map.setCenter({ lat, lng });
+            window.map.setZoom(15);
+        }
+    });
+
+    if (!vendorFound) {
+        console.warn(`❌ No vendor found with name: "${searchName}"`);
+        alert(`No vendor found with the name "${searchName}".`);
+    }
+}
+
+// Attach search function to button click
+document.getElementById("search-button").addEventListener("click", searchVendorByName);
+
+// Allow pressing "Enter" to trigger search
+document.getElementById("search-input").addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+        searchVendorByName();
+    }
+});
+
+        let lat = parseFloat(data.latitude);
+        let lng = parseFloat(data.longitude);
+
+        if (vendorName === searchName) {
+            vendorFound = true;
+
+            let marker = new google.maps.Marker({
+                position: { lat, lng },
+                map: window.map,
+                title: data.name
+            });
+
+            vendorMarkers.push(marker);
+
+            let infoWindow = new google.maps.InfoWindow({
+                content: `<h3>${data.name}</h3>
+                          <p>Location: ${data.location}</p>
+                          <p>Specialty: ${data.specialty}</p>`
+            });
+
+            marker.addListener("click", () => infoWindow.open(window.map, marker));
+
+            window.map.setCenter({ lat, lng });
+            window.map.setZoom(15);
+        }
+    });
+
+    if (!vendorFound) {
+        console.warn(`❌ No vendor found with name: "${searchName}"`);
+        alert(`No vendor found with the name "${searchName}".`);
+    }
+}
+
+// Attach search function to button click
+document.getElementById("search-button").addEventListener("click", searchVendorByName);
+
+// Allow pressing "Enter" to trigger search
+document.getElementById("search-input").addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+        searchVendorByName();
+    }
+});
+
+let marker = new google.maps.Marker({
+    position: { lat, lng },
+    map: window.map, // Make sure map is available
+    title: data.name
+});
+
+
+            vendorMarkers.push(marker);
+            bounds.extend(marker.position);
+
+            let infoWindow = new google.maps.InfoWindow({
+                content: `<h3>${data.name}</h3><p>${data.location}</p>`
+            });
+
+            marker.addListener("click", () => infoWindow.open(window.map, marker));
+        }
+    });
+
+    if (foundVendors > 0) {
+        console.log(`✅ Found ${foundVendors} vendors for "${searchFood}"`);
+        window.map.fitBounds(bounds);
+    } else {
+        console.warn(`❌ No vendors found for "${searchFood}"`);
+        alert(`No vendors found for ${foodType}.`);
+    }
+}
     
         window.initMap = initMap;
         window.filterVendorsByFood = filterVendorsByFood;
