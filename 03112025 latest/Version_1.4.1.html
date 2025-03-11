@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Street Bites Manila</title>
+    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <button onclick="toggleSidebar()">☰</button>
+        <ul>
+            <li>
+                <div class="food-item" onclick="filterVendorsByFood('Adidas (Chicken Feet)')">
+                    <a href="#find-stalls">
+                    </a>
+                    <p>Adidas (Chicken Feet)</p>
+                </div>
+            </li>
+            <li>
+                <div class="food-item" onclick="filterVendorsByFood('Atay')">
+                    <a href="#find-stalls">
+                    </a>
+                    <p>Atay</p>
+                </div>
+            </li>
+            <li>
+                <div class="food-item" onclick="filterVendorsByFood('Balut')">
+                    <a href="#find-stalls">
+                    </a>
+                    <p>Balut</p>
+                </div>
+            </li>
+            <li>
+                <div class="food-item" onclick="filterVendorsByFood('Bananaque')">
+                    <a href="#find-stalls">
+                    </a>
+                    <p>Bananaque</p>
+                </div>
+            </li>
+            <li>
+                <div class="food-item" onclick="filterVendorsByFood('Betamax')">
+                    <a href="#find-stalls">
+                    </a>
+                    <p>Betamax</p>
+                </div>
+            </li>
+            <li>
+                <div class="food-item" onclick="filterVendorsByFood('Fishball')">
+                    <a href="#find-stalls">
+                    </a>
+                    <p>Fishball</p>
+                </div>
+            </li>
+            <li>
+                <div class="food-item" onclick="filterVendorsByFood('Fresh lumpia')">
+                    <a href="#find-stalls">
+                    </a>
+                    <p>Fresh lumpia</p>
+                </div>
+            </li>
+            <li>
+                <div class="food-item" onclick="filterVendorsByFood('Halo-halo')">
+                    <a href="#find-stalls">
+                    </a>
+                    <p>Halo-halo</p>
+                </div>
+            </li>
+            <li>
+                <div class="food-item" onclick="filterVendorsByFood('Helmet (Chicken Head)')">
+                    <a href="#find-stalls">
+                    </a>
+                    <p>Helmet (Chicken Head)</p>
+                </div>
+            </li>
+            <li>
+                <div class="food-item" onclick="filterVendorsByFood('Isaw')">
+                    <a href="#find-stalls">
+                    </a>
+                    <p>Isaw</p>
+                </div>
+            </li>
+            <li>
+                <div class="food-item" onclick="filterVendorsByFood('Kikiam')">
+                    <a href="#find-stalls">
+                    </a>
+                    <p>Kikiam</p>
+                </div>
+            </li>
+            <li>
+                <div class="food-item" onclick="filterVendorsByFood('Kwek-kwek')">
+                    <a href="#find-stalls">
+                    </a>
+                    <p>Kwek-kwek</p>
+                </div>
+            </li>
+            <li>
+                <div class="food-item" onclick="filterVendorsByFood('Lomi')">
+                    <a href="#find-stalls">
+                    </a>
+                    <p>Lomi</p>
+                </div>
+            </li>
+            <li>
+                <div class="food-item" onclick="filterVendorsByFood('Lugaw')">
+                    <a href="#find-stalls">
+                    </a>
+                    <p>Lugaw</p>
+                </div>
+            </li>
+            <li>
+                <div class="food-item" onclick="filterVendorsByFood('Mangga w/ Bagoong')">
+                    <a href="#find-stalls">
+                    </a>
+                    <p>Mangga w/ Bagoong</p>
+                </div>
+            </li>
+            <li>
+                <div class="food-item" onclick="filterVendorsByFood('Okoy')">
+                    <a href="#find-stalls">
+                    </a>
+                    <p>Okoy</p>
+                </div>
+            </li>
+            <li>
+                <div class="food-item" onclick="filterVendorsByFood('Pares')">
+                    <a href="#find-stalls">
+                    </a>
+                    <p>Pares</p>
+                </div>
+            </li>
+            <li>
+                <div class="food-item" onclick="filterVendorsByFood('Proben')">
+                    <a href="#find-stalls">
+                    </a>
+                    <p>Proben</p>
+                </div>
+            </li>
+            <li>
+                <div class="food-item" onclick="filterVendorsByFood('Siomai')">
+                    <a href="#find-stalls">
+                    </a>
+                    <p>Siomai</p>
+                </div>
+            </li>
+            <li>
+                <div class="food-item" onclick="filterVendorsByFood('Squidball')">
+                    <a href="#find-stalls">
+                    </a>
+                    <p>Squidball</p>
+                </div>
+            </li>
+            <li>
+                <div class="food-item" onclick="filterVendorsByFood('Taho')">
+                    <a href="#find-stalls">
+                    </a>
+                    <p>Taho</p>
+                </div>
+            </li>
+            <li>
+                <div class="food-item" onclick="filterVendorsByFood('Turon')">
+                    <a href="#find-stalls">
+                    </a>
+                    <p>Turon</p>
+                </div>
+            </li>
+            <li>
+                <div class="food-item" onclick="filterVendorsByFood('Veggy balls')">
+                    <a href="#find-stalls">
+                    </a>
+                    <p>Veggy balls</p>
+                </div>
+            </li>
+            
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <header>
+            <h1 onclick="location.href='Version_1.4.1.html'">Street Bites Manila</h1>
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Enter Business Name...">
+                <button id="search-button">Search</button>
+            </div>
+            
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#find-stalls">Find Stalls</a></li>
+                    <li><a href="#reviews">Reviews</a></li>
+                    <li><a href="#signup">Vendor Sign-Up</a></li>
+                    <li><a href="#contact" onclick="location.href='contact.html'">Contact</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <section id="home">
+                <h2>Find the Best Street Food in Manila!</h2>
+            
+                <div id="streetfood-icons">
+                    <div class="food-item" onclick="filterVendorsByFood('Isaw')">
+                        <a href="#find-stalls">
+                        <img src="streetfood-icons/isaw.png" alt="Isaw">
+                        </a>
+                        <p>Isaw</p>
+                    </div>
+                    <div class="food-item" onclick="filterVendorsByFood('Fishball')">
+                        <a href="#find-stalls">
+                        <img src="streetfood-icons/fishball.png" alt="Fishball">
+                        </a>
+                        <p>Fishball</p>
+                    </div>
+                    <div class="food-item" onclick="filterVendorsByFood('Kwek-Kwek')">
+                        <a href="#find-stalls">
+                        <img src="streetfood-icons/kwek-kwek.png" alt="Kwek-kwek">
+                        </a>
+                        <p>Kwek-Kwek</p>
+                    </div>
+                    <div class="food-item" onclick="filterVendorsByFood('Kikiam')">
+                        <a href="#find-stalls">
+                        <img src="streetfood-icons/kikiam.png" alt="Kikiam">
+                        </a>
+                        <p>Kikiam</p>
+                    </div>
+                    <div class="food-item" onclick="filterVendorsByFood('Pork Barbeque')">
+                        <a href="#find-stalls">
+                        <img src="streetfood-icons/pork-bbq.png" alt="Pork Barbeque">
+                        </a>
+                        <p>Pork Barbeque</p>
+                    </div>
+                    <div class="food-item" onclick="filterVendorsByFood('Calamares')">
+                        <a href="#find-stalls">
+                        <img src="streetfood-icons/calamares.png" alt="Calamares">
+                        </a>
+                        <p>Calamares</p>
+                    </div>
+                    <div class="food-item" onclick="filterVendorsByFood('Bananaque')">
+                        <a href="#find-stalls">
+                        <img src="streetfood-icons/bananaque.png" alt="Bananaque">
+                        </a>
+                        <p>Bananaque</p>
+                    </div>
+                    <div class="food-item" onclick="filterVendorsByFood('Squidball')">
+                        <a href="#find-stalls">
+                        <img src="streetfood-icons/squidball.png" alt="Squidball">
+                        </a>
+                        <p>Squidball</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="find-stalls">
+                <h2>Food Stall Finder</h2>
+                <p>Browse stalls on our interactive map.</p>
+                <div id="map"></div>
+            </section>
+
+            <section id="reviews">
+                <h2>Customer Reviews</h2>
+                <p>See what others are saying about their favorite street food spots.</p>
+            </section>
+
+            <section id="signup">
+                <h2>Vendor Sign-Up</h2>
+                <p>Register your food stall to reach more customers!</p>
+                <button class="vendor-signup" onclick="location.href='vendor-signup.html'">Sign Up</button>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 Street Bites Manila | All Rights Reserved</p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+        var sidebar = document.getElementById("sidebar");
+        sidebar.classList.toggle("expanded");
+        }
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWwZaheI8E8zXhuQFIkdcHDkq_x265FuU&callback=initMap" async defer></script>
+
+    <script>
+        let map;
+
+        function initMap() {
+    console.log("🌍 Initializing Google Map...");
+    
+    // Ensure map is globally accessible
+    window.map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 12,
+        center: { lat: 14.5995, lng: 120.9842 } // Default Manila
+    });
+
+    console.log("✅ Google Map initialized:", window.map);
+}
+
+    </script>
+
+    <script>
+        function filterVendorsByFood(food) {
+            console.log("Filtering vendors for:", food);
+
+            // Scroll to the map section smoothly
+            document.getElementById("map").scrollIntoView({ behavior: "smooth" });
+
+            // You can also add your vendor filtering logic here
+        }
+    </script>
+
+
+
+
+    <script type="module">
+        import { db } from "./firebase-config.js";
+        import { collection, getDocs } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+    
+        let vendorMarkers = []; // Store vendor markers
+    
+        function initMap() {
+            window.map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 14.5995, lng: 120.9842 }, // Default Manila
+                zoom: 12
+            });
+        }
+    
+        async function filterVendorsByFood(foodType) {
+    let searchFood = foodType.trim(); // Ensure exact match
+    console.log(`🔍 Searching for vendors selling: "${searchFood}"`);
+
+    // Ensure the map is initialized
+    if (!window.map) {
+        console.error("❌ Google Map is not initialized.");
+        alert("Map is not loaded yet. Please try again.");
+        return;
+    }
+
+    // Clear existing markers
+    vendorMarkers.forEach(marker => marker.setMap(null));
+    vendorMarkers = [];
+
+    const querySnapshot = await getDocs(collection(db, "vendors"));
+    let foundVendors = 0;
+    let bounds = new google.maps.LatLngBounds();
+
+    querySnapshot.forEach(doc => {
+        let data = doc.data();
+        console.log("📌 Fetched vendor data:", data);
+
+        let vendorFood = data.specialty.trim(); // Ensure exact match
+
+        // Convert latitude and longitude from string to number
+        let lat = parseFloat(data.latitude);
+        let lng = parseFloat(data.longitude);
+
+        // Validate lat/lng before creating a marker
+        if (isNaN(lat) || isNaN(lng)) {
+            console.error(`❌ Invalid lat/lng values for ${data.name}:`, data.latitude, data.longitude);
+            return;
+        }
+
+        if (vendorFood === searchFood) {
+            foundVendors++;
+
+            if (!window.map) {
+    console.error("❌ Google Map is not initialized!");
+    alert("Map is not loaded yet. Please refresh and try again.");
+    return;
+}
+
+async function searchVendorByName() {
+    let searchName = document.getElementById("search-input").value.trim().toLowerCase();
+
+    if (searchName === "") {
+        alert("Please enter a business name to search.");
+        return;
+    }
+
+    console.log(`🔍 Searching for vendor: "${searchName}"`);
+
+    // Clear existing markers
+    vendorMarkers.forEach(marker => marker.setMap(null));
+    vendorMarkers = [];
+
+    const querySnapshot = await getDocs(collection(db, "vendors"));
+    let vendorFound = false;
+
+    querySnapshot.forEach(doc => {
+        let data = doc.data();
+        async function searchVendorByName() {
+    let searchName = document.getElementById("search-input").value.trim().toLowerCase().replace(/\s+/g, "");
+    
+    if (searchName === "") {
+        alert("Please enter a business name to search.");
+        return;
+    }
+
+    console.log(`🔍 Searching for vendor: "${searchName}"`);
+
+    // Clear existing markers
+    vendorMarkers.forEach(marker => marker.setMap(null));
+    vendorMarkers = [];
+
+    const querySnapshot = await getDocs(collection(db, "vendors"));
+    let vendorFound = false;
+
+    querySnapshot.forEach(doc => {
+        let data = doc.data();
+        let vendorName = data.name.trim().toLowerCase().replace(/\s+/g, ""); // Remove spaces for better matching
+        let lat = parseFloat(data.latitude);
+        let lng = parseFloat(data.longitude);
+
+        if (vendorName === searchName) {
+            vendorFound = true;
+
+            let marker = new google.maps.Marker({
+                position: { lat, lng },
+                map: window.map,
+                title: data.name
+            });
+
+            vendorMarkers.push(marker);
+
+            let infoWindow = new google.maps.InfoWindow({
+                content: `<h3>${data.name}</h3>
+                          <p>Location: ${data.location}</p>
+                          <p>Specialty: ${data.specialty}</p>`
+            });
+
+            marker.addListener("click", () => infoWindow.open(window.map, marker));
+
+            window.map.setCenter({ lat, lng });
+            window.map.setZoom(15);
+        }
+    });
+
+    if (!vendorFound) {
+        console.warn(`❌ No vendor found with name: "${searchName}"`);
+        alert(`No vendor found with the name "${searchName}".`);
+    }
+}
+
+// Attach search function to button click
+document.getElementById("search-button").addEventListener("click", searchVendorByName);
+
+// Allow pressing "Enter" to trigger search
+document.getElementById("search-input").addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+        searchVendorByName();
+    }
+});
+
+        let lat = parseFloat(data.latitude);
+        let lng = parseFloat(data.longitude);
+
+        if (vendorName === searchName) {
+            vendorFound = true;
+
+            let marker = new google.maps.Marker({
+                position: { lat, lng },
+                map: window.map,
+                title: data.name
+            });
+
+            vendorMarkers.push(marker);
+
+            let infoWindow = new google.maps.InfoWindow({
+                content: `<h3>${data.name}</h3>
+                          <p>Location: ${data.location}</p>
+                          <p>Specialty: ${data.specialty}</p>`
+            });
+
+            marker.addListener("click", () => infoWindow.open(window.map, marker));
+
+            window.map.setCenter({ lat, lng });
+            window.map.setZoom(15);
+        }
+    });
+
+    if (!vendorFound) {
+        console.warn(`❌ No vendor found with name: "${searchName}"`);
+        alert(`No vendor found with the name "${searchName}".`);
+    }
+}
+
+// Attach search function to button click
+document.getElementById("search-button").addEventListener("click", searchVendorByName);
+
+// Allow pressing "Enter" to trigger search
+document.getElementById("search-input").addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+        searchVendorByName();
+    }
+});
+
+let marker = new google.maps.Marker({
+    position: { lat, lng },
+    map: window.map, // Make sure map is available
+    title: data.name
+});
+
+
+            vendorMarkers.push(marker);
+            bounds.extend(marker.position);
+
+            let infoWindow = new google.maps.InfoWindow({
+                content: `<h3>${data.name}</h3><p>${data.location}</p>`
+            });
+
+            marker.addListener("click", () => infoWindow.open(window.map, marker));
+        }
+    });
+
+    if (foundVendors > 0) {
+        console.log(`✅ Found ${foundVendors} vendors for "${searchFood}"`);
+        window.map.fitBounds(bounds);
+    } else {
+        console.warn(`❌ No vendors found for "${searchFood}"`);
+        alert(`No vendors found for ${foodType}.`);
+    }
+}
+    
+        window.initMap = initMap;
+        window.filterVendorsByFood = filterVendorsByFood;
+    </script>
+    
+</body>
+</html>
