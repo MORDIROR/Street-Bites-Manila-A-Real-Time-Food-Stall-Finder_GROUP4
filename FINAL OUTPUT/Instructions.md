@@ -3,7 +3,7 @@
 This is the final output of Street Bites Manila website!
 
 Instructions on how to run the website:
-1. Download the folder "Street Bites Manila"
+1. Download the folder "Street Bites Manila" located on the folder "FINAL OUTPUT"
 2. Open Visual Studio Code
 3. Open the downloaded folder
 4. Click the "Version_1.4.1.html"
