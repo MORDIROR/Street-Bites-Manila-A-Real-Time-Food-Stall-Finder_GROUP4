@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Street Bites Manila</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <header>
+        <h1 onclick="location.href='Version_1.4.1.html'">Street Bites Manila</h1>
+    </header>
+
+    <main>
+      <section id="leave-review">
+          <h2>Leave a Review</h2>
+          <form id="review-form">
+              <input type="customer-name" id="customer-name" required placeholder="Your Name">
+              
+              <label for="star-rating">Rating:</label>
+              <select id="star-rating" required>
+                  <option value="5">★★★★★ (5)</option>
+                  <option value="4">★★★★☆ (4)</option>
+                  <option value="3">★★★☆☆ (3)</option>
+                  <option value="2">★★☆☆☆ (2)</option>
+                  <option value="1">★☆☆☆☆ (1)</option>
+              </select>
+
+              <textarea id="review-text" required placeholder="Write your review..."></textarea>
+
+              <label for="vendor-list">Choose Vendor:</label>
+              <select id="vendor-list" required>
+                  <option value="">-- Select a Vendor --</option>
+              </select>
+
+              <button type="submit">Submit Review</button>
+          </form>
+      </section>
+      <section id="reviews">
+        <h2>Customer Reviews</h2>
+        <ul id="reviews-list"></ul>
+    </section>
+  </main>
+
+<script type="module">
+import { db } from "./firebase-config.js";
+import { collection, getDocs, onSnapshot, query, orderBy, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+
+async function loadVendors() {
+    const vendorList = document.getElementById("vendor-list");  // List
+    const vendorSelect = document.getElementById("vendor-list");  // Dropdown
+
+    vendorList.innerHTML = "<option>Loading vendors...</option>";
+    vendorSelect.innerHTML = `<option value="">-- Select a Vendor --</option>`;
+
+    try {
+        const querySnapshot = await getDocs(collection(db, "vendors"));
+        vendorList.innerHTML = "";
+
+        querySnapshot.forEach((doc) => {
+            let vendorData = doc.data();
+            console.log("Fetched Vendor:", vendorData);
+
+            // Add to List
+            let li = document.createElement("li");
+            li.textContent = vendorData.name;
+            vendorList.appendChild(li);
+
+            // Add to Dropdown
+            let option = document.createElement("option");
+            option.value = vendorData.name;
+            option.textContent = vendorData.name;
+            vendorSelect.appendChild(option);
+        });
+
+        if (!vendorList.hasChildNodes()) {
+            vendorList.innerHTML = "<option>No vendors found.</option>";
+        }
+    } catch (error) {
+        console.error("Error loading vendors:", error);
+        vendorList.innerHTML = "<option>Error loading vendors.</option>";
+    }
+}
+
+
+// Call the function when the page loads
+document.addEventListener("DOMContentLoaded", loadVendors);
+
+
+function loadReviews() {
+    const reviewsList = document.getElementById("reviews-list");
+    reviewsList.innerHTML = "<li>Loading reviews...</li>";
+
+    const q = query(collection(db, "reviews"), orderBy("timestamp", "desc"));
+
+    onSnapshot(q, (snapshot) => {
+        reviewsList.innerHTML = ""; // Clear existing reviews
+
+        snapshot.forEach((doc) => {
+            let data = doc.data();
+            let customerName = data.customerName || "Anonymous"; // Default if missing
+            let reviewText = data.reviewText || "No review provided";
+            let rating = data.rating || "0"; // Default rating if missing
+
+            let li = document.createElement("li");
+            li.innerHTML = `<strong>${customerName}</strong>: ${reviewText} (⭐${rating})`;
+            reviewsList.appendChild(li);
+        });
+
+        if (reviewsList.innerHTML === "") {
+            reviewsList.innerHTML = "<option>No reviews yet.</option>";
+        }
+    });
+}
+
+// Call the function when the homepage loads
+document.addEventListener("DOMContentLoaded", loadReviews);
+
+
+// Function to handle review submission
+document.addEventListener("DOMContentLoaded", function () {
+    loadVendors();  // Load vendors when page loads
+
+    document.getElementById("review-form").addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        let customerName = document.getElementById("customer-name").value.trim();
+        let reviewText = document.getElementById("review-text").value.trim();
+        let rating = document.getElementById("star-rating").value;
+        let vendor = document.getElementById("vendor-list").value;
+
+        if (!customerName || !reviewText || !rating || !vendor) {
+            alert("Please fill in all fields.");
+            return;
+        }
+
+        try {
+            await addDoc(collection(db, "reviews"), {
+                customerName,
+                vendor,
+                reviewText,
+                rating,
+                timestamp: serverTimestamp()
+            });
+
+            alert("Review submitted successfully!");
+            document.getElementById("review-form").reset();
+        } catch (error) {
+            console.error("Error adding review: ", error);
+            alert("Error: " + error.message);
+        }
+    });
+});
+
+  </script>
+
+  
+</body>
+</html>
